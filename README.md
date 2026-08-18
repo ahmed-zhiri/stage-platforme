@@ -1,2 +1,2 @@
-# stage-ONEE-platforme
-Plateforme de gestion des stages - ONEE
+# stage-platforme
+Plateforme de gestion des stages - 
