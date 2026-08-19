@@ -1,0 +1,62 @@
+@model StagesPlatform.Models.DemandeStage
+
+@{
+    ViewData["Title"] = "Details de la demande";
+}
+
+<h1 style="color: #022552;">Details de la demande</h1>
+
+<div class="card mb-4">
+    <div class="card-header" style="background-color: #022552; color: white;">
+        <h4 class="mb-0">@Model.Sujet</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Stagiaire</dt>
+            <dd class="col-sm-9">@Model.NomStagiaire (@Model.EmailStagiaire)</dd>
+
+            <dt class="col-sm-3">Entreprise</dt>
+            <dd class="col-sm-9">@Model.Entreprise</dd>
+
+            <dt class="col-sm-3">Encadrant</dt>
+            <dd class="col-sm-9">@Model.Encadrant</dd>
+
+            <dt class="col-sm-3">Type de stage</dt>
+            <dd class="col-sm-9">@Model.TypeStage</dd>
+
+            <dt class="col-sm-3">Periode</dt>
+            <dd class="col-sm-9">
+                Du @Model.DateDebut.ToString("dd/MM/yyyy")
+                au @Model.DateFin.ToString("dd/MM/yyyy")
+                (@Model.DureeEnJours jours)
+            </dd>
+
+            <dt class="col-sm-3">Etat actuel</dt>
+            <dd class="col-sm-9"><span class="badge bg-primary">@Model.Etat</span></dd>
+
+            <dt class="col-sm-3">Date de creation</dt>
+            <dd class="col-sm-9">@Model.DateCreation.ToString("dd/MM/yyyy HH:mm")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Changer l'etat (workflow)</div>
+    <div class="card-body">
+        <form asp-action="ChangerEtat" method="post" class="row g-2">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="col-md-6">
+                <select name="nouvelEtat" class="form-select" asp-items="Html.GetEnumSelectList<EtatDemande>()"></select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Mettre a jour</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editer</a>
+<a asp-action="Index" class="btn btn-secondary">Retour a la liste</a>
