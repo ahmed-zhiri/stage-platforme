@@ -1,0 +1,22 @@
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #fafafa;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.table thead th {
+    font-weight: 500;
+    border: none;
+}
+
+footer {
+    background-color: #ffffff;
+}

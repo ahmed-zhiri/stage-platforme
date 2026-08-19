@@ -1,0 +1,77 @@
+@model StagesPlatform.Models.DemandeStage
+
+@{
+    ViewData["Title"] = "Nouvelle demande";
+}
+
+<h1 style="color: #022552;">Nouvelle demande de stage</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Sujet" class="form-label"></label>
+                <input asp-for="Sujet" class="form-control" />
+                <span asp-validation-for="Sujet" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="NomStagiaire" class="form-label"></label>
+                    <input asp-for="NomStagiaire" class="form-control" />
+                    <span asp-validation-for="NomStagiaire" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="EmailStagiaire" class="form-label"></label>
+                    <input asp-for="EmailStagiaire" class="form-control" />
+                    <span asp-validation-for="EmailStagiaire" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Entreprise" class="form-label"></label>
+                    <input asp-for="Entreprise" class="form-control" />
+                    <span asp-validation-for="Entreprise" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Encadrant" class="form-label"></label>
+                    <input asp-for="Encadrant" class="form-control" />
+                    <span asp-validation-for="Encadrant" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label asp-for="DateDebut" class="form-label"></label>
+                    <input asp-for="DateDebut" class="form-control" type="date" />
+                    <span asp-validation-for="DateDebut" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="DateFin" class="form-label"></label>
+                    <input asp-for="DateFin" class="form-control" type="date" />
+                    <span asp-validation-for="DateFin" class="text-danger"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="TypeStage" class="form-label"></label>
+                    <select asp-for="TypeStage" class="form-select" asp-items="Html.GetEnumSelectList<TypeStage>()"></select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Creer la demande</button>
+            <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

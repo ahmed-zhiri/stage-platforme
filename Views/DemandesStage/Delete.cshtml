@@ -1,0 +1,33 @@
+@model StagesPlatform.Models.DemandeStage
+
+@{
+    ViewData["Title"] = "Supprimer la demande";
+}
+
+<h1 style="color: #dc3545;">Supprimer cette demande ?</h1>
+
+<div class="alert alert-warning">Cette action est irreversible.</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Sujet</dt>
+            <dd class="col-sm-9">@Model.Sujet</dd>
+
+            <dt class="col-sm-3">Stagiaire</dt>
+            <dd class="col-sm-9">@Model.NomStagiaire</dd>
+
+            <dt class="col-sm-3">Entreprise</dt>
+            <dd class="col-sm-9">@Model.Entreprise</dd>
+
+            <dt class="col-sm-3">Etat</dt>
+            <dd class="col-sm-9">@Model.Etat</dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Confirmer la suppression</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>
