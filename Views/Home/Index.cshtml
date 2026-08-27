@@ -1,43 +1,66 @@
+@using Microsoft.AspNetCore.Identity
+@using GestionStagiaires.Web.Models.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @{
-    ViewData["Title"] = "Accueil";
+    ViewData["Title"] = "Tableau de bord";
 }
 
-<div class="p-5 mb-4 bg-light rounded-3 border">
-    <div class="container-fluid py-3">
-        <h1 class="display-5 fw-bold"><i class="bi bi-mortarboard-fill text-primary"></i> Gestion des Stagiaires</h1>
-        <p class="col-md-9 fs-5 text-muted">
-            Application de gestion des stagiaires de l'organisme d'accueil : back-office
-            ASP.NET Core MVC + API, front-office Bootstrap / jQuery / AJAX, déployable sur IIS.
-        </p>
-        <a class="btn btn-primary btn-lg" asp-controller="Stagiaires" asp-action="Index">
-            <i class="bi bi-people-fill"></i> Accéder aux stagiaires
-        </a>
+<div class="page-head">
+    <h1>Tableau de bord</h1>
+    <p>Gestion des stagiaires · Direction du Système d'Information</p>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-people-fill fs-4 text-brand"></i>
+                    <h3 class="h5 mb-0">Stagiaires</h3>
+                </div>
+                <p class="text-muted mb-3">Créer, consulter, modifier et supprimer les dossiers, avec recherche et pagination.</p>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <a class="btn btn-primary" asp-controller="Stagiaires" asp-action="Index">Ouvrir la liste →</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Se connecter →</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-shield-lock fs-4 text-brand"></i>
+                    <h3 class="h5 mb-0">Authentification</h3>
+                </div>
+                <p class="text-muted mb-0">Accès sécurisé via ASP.NET Core Identity (connexion, inscription, rôles).</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <i class="bi bi-code-slash fs-4 text-brand"></i>
+                    <h3 class="h5 mb-0">API REST</h3>
+                </div>
+                <p class="text-muted mb-0">Endpoints <code>/api/stagiaires</code> consommés en AJAX par le front-office.</p>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-shield-lock text-primary"></i> Authentification</h5>
-                <p class="card-text text-muted">Accès sécurisé via ASP.NET Core Identity (connexion, inscription, rôles).</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-hdd-stack text-primary"></i> CRUD complet</h5>
-                <p class="card-text text-muted">Création, consultation, modification et suppression des stagiaires, avec recherche et pagination.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-code-slash text-primary"></i> API REST</h5>
-                <p class="card-text text-muted">Endpoints <code>/api/stagiaires</code> consommés en AJAX par le front-office.</p>
-            </div>
-        </div>
+<div class="card">
+    <div class="card-body">
+        <h2 class="h4 mb-2">Bienvenue 👋</h2>
+        <p class="text-muted mb-0">
+            Cette application de gestion des stagiaires repose sur une architecture classique :
+            back-office <strong>ASP.NET Core MVC + API</strong>, front-office <strong>Bootstrap / jQuery / AJAX</strong>,
+            hébergement <strong>IIS</strong>. Utilisez le menu de gauche pour naviguer.
+        </p>
     </div>
 </div>

@@ -3,15 +3,19 @@
     ViewData["Title"] = "Nouveau stagiaire";
 }
 
-<h1 class="h3 mb-3"><i class="bi bi-plus-circle text-success"></i> Nouveau stagiaire</h1>
+<div class="page-head">
+    <h1>Nouveau stagiaire</h1>
+    <p>Renseignez les informations du dossier.</p>
+</div>
 
-<div class="card shadow-sm">
+<div class="card">
     <div class="card-body">
+        <h2 class="h5 mb-3">Informations du stagiaire</h2>
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
             <partial name="_FormFields" model="Model" />
             <div class="mt-4 d-flex gap-2">
-                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Enregistrer</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Enregistrer</button>
                 <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
             </div>
         </form>

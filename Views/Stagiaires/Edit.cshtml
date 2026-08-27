@@ -3,10 +3,14 @@
     ViewData["Title"] = "Modifier le stagiaire";
 }
 
-<h1 class="h3 mb-3"><i class="bi bi-pencil-square text-primary"></i> Modifier le stagiaire</h1>
+<div class="page-head">
+    <h1>Modifier le stagiaire</h1>
+    <p>Mettez à jour les informations du dossier.</p>
+</div>
 
-<div class="card shadow-sm">
+<div class="card">
     <div class="card-body">
+        <h2 class="h5 mb-3">Informations du stagiaire</h2>
         <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
             <input type="hidden" asp-for="Id" />

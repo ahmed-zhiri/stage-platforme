@@ -1,45 +1,62 @@
 @model RegisterViewModel
 @{
     ViewData["Title"] = "Inscription";
+    Layout = "_LayoutAuth";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h1 class="h4 mb-3 text-center"><i class="bi bi-person-plus text-primary"></i> Créer un compte</h1>
-                <form asp-action="Register" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
-                    <div class="mb-3">
-                        <label asp-for="NomComplet" class="form-label"></label>
-                        <input asp-for="NomComplet" class="form-control" autofocus />
-                        <span asp-validation-for="NomComplet" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" type="email" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">S'inscrire</button>
-                    </div>
-                </form>
-                <hr />
-                <p class="text-center mb-0">
-                    Déjà inscrit ? <a asp-action="Login">Se connecter</a>
-                </p>
+<div class="auth-card">
+    <div class="auth-brand">
+        <span class="auth-brand__circle auth-brand__circle--top"></span>
+        <span class="auth-brand__circle auth-brand__circle--bottom"></span>
+
+        <div class="auth-brand__content">
+            <div class="brand-mark" style="color:#fff">
+                <span class="brand-mark__badge">S</span>
+                <span>Stages ONEE<small style="color:rgba(255,255,255,.75)">DSI · Direction SI</small></span>
             </div>
+            <h1>Rejoignez<br />l'espace stages.</h1>
+            <p>Créez votre compte pour candidater, déposer vos livrables et suivre l'avancement de votre stage en toute simplicité.</p>
         </div>
+
+        <div class="auth-brand__foot">© @DateTime.Now.Year ONEE · DSI</div>
+    </div>
+
+    <div class="auth-form">
+        <h2>Créer un compte</h2>
+        <p class="auth-form__sub">Quelques informations et vous êtes prêt.</p>
+
+        <form asp-action="Register" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+            <div class="mb-3">
+                <label asp-for="NomComplet" class="form-label">Nom complet <span class="req">*</span></label>
+                <input asp-for="NomComplet" class="form-control" autofocus placeholder="Prénom Nom" />
+                <span asp-validation-for="NomComplet" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label">Email <span class="req">*</span></label>
+                <input asp-for="Email" class="form-control" type="email" placeholder="prenom.nom@etablissement.ma" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label">Mot de passe <span class="req">*</span></label>
+                <input asp-for="Password" class="form-control" placeholder="••••••••••" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ConfirmPassword" class="form-label">Confirmer le mot de passe <span class="req">*</span></label>
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="••••••••••" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">S'inscrire&nbsp;→</button>
+            </div>
+        </form>
+
+        <p class="text-center mt-4 mb-0">
+            Déjà inscrit ? <a asp-action="Login" class="text-accent fw-semibold">Se connecter</a>
+        </p>
     </div>
 </div>
 
