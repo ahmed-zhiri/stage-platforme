@@ -189,60 +189,6 @@ namespace SIGSTO.Controllers
         }
 
         [HttpPost]
-        public IActionResult AttacherConvention(int candidatureId, IFormFile convention, IFormFile assurance)
-        {
-            var candidature = _db.Candidatures
-                .Include(c => c.Offre)
-                .Include(c => c.Convention)
-                .FirstOrDefault(c => c.Id == candidatureId && c.Offre!.GestionnaireId == UserId);
-            if (candidature == null) return NotFound();
-
-            var dir = Path.Combine("wwwroot", "uploads", candidatureId.ToString());
-            Directory.CreateDirectory(dir);
-
-            var cheminConv = "";
-            var cheminAssurance = "";
-
-            if (convention != null && convention.Length > 0)
-            {
-                var path = Path.Combine(dir, "convention.pdf");
-                using var stream = new FileStream(path, FileMode.Create);
-                convention.CopyTo(stream);
-                cheminConv = path.Replace("wwwroot/", "/").Replace("wwwroot\\", "/");
-            }
-
-            if (assurance != null && assurance.Length > 0)
-            {
-                var path = Path.Combine(dir, "assurance.pdf");
-                using var stream = new FileStream(path, FileMode.Create);
-                assurance.CopyTo(stream);
-                cheminAssurance = path.Replace("wwwroot/", "/").Replace("wwwroot\\", "/");
-            }
-
-            if (candidature.Convention == null)
-            {
-                candidature.Convention = new Convention
-                {
-                    CandidatureId = candidatureId,
-                    CheminConv = cheminConv,
-                    CheminAssurance = cheminAssurance,
-                    Statut = StatutConvention.EnAttente
-                };
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(cheminConv))
-                    candidature.Convention.CheminConv = cheminConv;
-                if (!string.IsNullOrEmpty(cheminAssurance))
-                    candidature.Convention.CheminAssurance = cheminAssurance;
-            }
-
-            _db.SaveChanges();
-            TempData["Success"] = "Convention attachee.";
-            return RedirectToAction("DetailCandidature", new { id = candidatureId });
-        }
-
-        [HttpPost]
         public IActionResult AssignerEncadrant(int candidatureId, int encadrantId)
         {
             var candidature = _db.Candidatures

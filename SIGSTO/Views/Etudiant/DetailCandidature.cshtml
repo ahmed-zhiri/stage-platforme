@@ -59,17 +59,42 @@
     </ul>
 </div>
 
-@if (Model.Convention != null)
-{
-    <div class="card">
-        <h3>Convention</h3>
+<!-- Convention -->
+<div class="card">
+    <h3>Convention</h3>
+    @if (Model.Convention != null)
+    {
         <p>Statut: <span class="badge">@Model.Convention.Statut</span></p>
         @if (!string.IsNullOrEmpty(Model.Convention.CheminConv))
         {
             <p><a href="@Model.Convention.CheminConv" target="_blank">Telecharger la convention</a></p>
         }
-    </div>
-}
+        @if (!string.IsNullOrEmpty(Model.Convention.CheminAssurance))
+        {
+            <p><a href="@Model.Convention.CheminAssurance" target="_blank">Telecharger l'assurance</a></p>
+        }
+    }
+    else if (Model.StatutCandidature == SIGSTO.Models.StatutCandidature.Acceptee)
+    {
+        <p style="margin-bottom:0.8rem; color:#555">Votre candidature a ete acceptee. Veuillez soumettre votre convention et assurance.</p>
+        <form method="post" action="/Etudiant/AttacherConvention" enctype="multipart/form-data">
+            <input type="hidden" name="candidatureId" value="@Model.Id" />
+            <div class="form-group">
+                <label>Convention (PDF)</label>
+                <input type="file" name="convention" class="form-control" accept=".pdf" required />
+            </div>
+            <div class="form-group">
+                <label>Assurance (PDF)</label>
+                <input type="file" name="assurance" class="form-control" accept=".pdf" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Soumettre</button>
+        </form>
+    }
+    else
+    {
+        <p style="color:#888">Disponible apres acceptation de votre candidature.</p>
+    }
+</div>
 
 @if (Model.AccordDeStage != null)
 {

@@ -150,6 +150,53 @@ namespace SIGSTO.Controllers
             return View(candidature);
         }
 
+        [HttpPost]
+        public IActionResult AttacherConvention(int candidatureId, IFormFile convention, IFormFile assurance)
+        {
+            var candidature = _db.Candidatures
+                .Include(c => c.Convention)
+                .FirstOrDefault(c => c.Id == candidatureId && c.EtudiantId == UserId);
+            if (candidature == null) return NotFound();
+
+            if (candidature.StatutCandidature != StatutCandidature.Acceptee)
+            {
+                TempData["Error"] = "Vous ne pouvez soumettre la convention qu'apres acceptation.";
+                return RedirectToAction("DetailCandidature", new { id = candidatureId });
+            }
+
+            var dir = Path.Combine("wwwroot", "uploads", candidatureId.ToString());
+            Directory.CreateDirectory(dir);
+
+            var cheminConv = SaveFile(convention, dir, "convention.pdf");
+            var cheminAssurance = SaveFile(assurance, dir, "assurance.pdf");
+
+            if (string.IsNullOrEmpty(cheminConv) || string.IsNullOrEmpty(cheminAssurance))
+            {
+                TempData["Error"] = "Les deux fichiers (convention et assurance) sont obligatoires en PDF.";
+                return RedirectToAction("DetailCandidature", new { id = candidatureId });
+            }
+
+            if (candidature.Convention == null)
+            {
+                candidature.Convention = new Convention
+                {
+                    CandidatureId = candidatureId,
+                    CheminConv = cheminConv,
+                    CheminAssurance = cheminAssurance,
+                    Statut = StatutConvention.EnAttente
+                };
+            }
+            else
+            {
+                candidature.Convention.CheminConv = cheminConv;
+                candidature.Convention.CheminAssurance = cheminAssurance;
+            }
+
+            _db.SaveChanges();
+            TempData["Success"] = "Convention et assurance soumises avec succes.";
+            return RedirectToAction("DetailCandidature", new { id = candidatureId });
+        }
+
         private string SaveFile(IFormFile file, string dir, string filename)
         {
             if (file == null || file.Length == 0) return "";

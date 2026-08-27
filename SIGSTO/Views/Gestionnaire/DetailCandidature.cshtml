@@ -85,18 +85,7 @@
     }
     else
     {
-        <form method="post" action="/Gestionnaire/AttacherConvention" enctype="multipart/form-data">
-            <input type="hidden" name="candidatureId" value="@Model.Id" />
-            <div class="form-group">
-                <label>Convention (PDF)</label>
-                <input type="file" name="convention" class="form-control" accept=".pdf" />
-            </div>
-            <div class="form-group">
-                <label>Assurance (PDF)</label>
-                <input type="file" name="assurance" class="form-control" accept=".pdf" />
-            </div>
-            <button type="submit" class="btn btn-primary btn-sm">Attacher la convention</button>
-        </form>
+        <p style="color:#888">L'etudiant n'a pas encore soumis sa convention.</p>
     }
 </div>
 
