@@ -2,57 +2,41 @@
     ViewData["Title"] = "Accueil";
 }
 
-<div class="jumbotron p-5 rounded" style="background-color: #f2f2f2;">
-    <h1 class="display-5" style="color: #022552;">Plateforme de gestion des stages</h1>
-    <p class="lead">
-        Preuve de concept (POC) developpee dans le cadre du stage de decouverte a l'ONEE.
-        Cette application illustre la mise en oeuvre pratique des concepts de la POO en C#
-        et du framework ASP.NET Core MVC 8.
-    </p>
-    <hr class="my-4" />
-    <p>
-        Elle constitue le squelette technique de la plateforme complete de gestion des stages
-        decrite dans le cahier des charges fonctionnel.
-    </p>
-    <a class="btn btn-primary btn-lg" asp-controller="DemandesStage" asp-action="Index" role="button">
-        Consulter les demandes
-    </a>
-    <a class="btn btn-outline-primary btn-lg" asp-controller="DemandesStage" asp-action="Create" role="button">
-        Creer une demande
-    </a>
+<div class="p-5 mb-4 bg-light rounded-3 border">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold"><i class="bi bi-mortarboard-fill text-primary"></i> Gestion des Stagiaires</h1>
+        <p class="col-md-9 fs-5 text-muted">
+            Application de gestion des stagiaires de l'organisme d'accueil : back-office
+            ASP.NET Core MVC + API, front-office Bootstrap / jQuery / AJAX, déployable sur IIS.
+        </p>
+        <a class="btn btn-primary btn-lg" asp-controller="Stagiaires" asp-action="Index">
+            <i class="bi bi-people-fill"></i> Accéder aux stagiaires
+        </a>
+    </div>
 </div>
 
-<div class="row mt-4">
+<div class="row g-4">
     <div class="col-md-4">
-        <div class="card h-100">
+        <div class="card h-100 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">Architecture MVC</h5>
-                <p class="card-text">
-                    Separation stricte Modele / Vue / Controleur, routing conventionnel,
-                    passage de donnees fortement type.
-                </p>
+                <h5 class="card-title"><i class="bi bi-shield-lock text-primary"></i> Authentification</h5>
+                <p class="card-text text-muted">Accès sécurisé via ASP.NET Core Identity (connexion, inscription, rôles).</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card h-100">
+        <div class="card h-100 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">Entity Framework Core</h5>
-                <p class="card-text">
-                    Approche Code First, persistence SQL Server, requetes LINQ to Entities
-                    et suivi des changements.
-                </p>
+                <h5 class="card-title"><i class="bi bi-hdd-stack text-primary"></i> CRUD complet</h5>
+                <p class="card-text text-muted">Création, consultation, modification et suppression des stagiaires, avec recherche et pagination.</p>
             </div>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card h-100">
+        <div class="card h-100 shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">POO et validation</h5>
-                <p class="card-text">
-                    Data Annotations, model binding, encapsulation des regles metier
-                    et transitions d'etat controlees.
-                </p>
+                <h5 class="card-title"><i class="bi bi-code-slash text-primary"></i> API REST</h5>
+                <p class="card-text text-muted">Endpoints <code>/api/stagiaires</code> consommés en AJAX par le front-office.</p>
             </div>
         </div>
     </div>

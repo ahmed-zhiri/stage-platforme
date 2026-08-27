@@ -1,0 +1,23 @@
+@model StagiaireCreateDto
+@{
+    ViewData["Title"] = "Nouveau stagiaire";
+}
+
+<h1 class="h3 mb-3"><i class="bi bi-plus-circle text-success"></i> Nouveau stagiaire</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+            <partial name="_FormFields" model="Model" />
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Enregistrer</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

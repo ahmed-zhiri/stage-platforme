@@ -1,58 +1,45 @@
+using GestionStagiaires.Web.Models.Entities;
+using GestionStagiaires.Web.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using StagesPlatform.Models;
 
-namespace StagesPlatform.Data
+namespace GestionStagiaires.Web.Data;
+
+/// <summary>
+/// Contexte de base de données Entity Framework Core.
+/// Hérite d'IdentityDbContext pour intégrer les tables d'authentification
+/// ASP.NET Core Identity en plus des tables métier.
+/// </summary>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    /// <summary>
-    /// Contexte Entity Framework Core de l'application.
-    /// Approche Code First : les tables sont generees a partir des classes.
-    /// </summary>
-    public class ApplicationDbContext : DbContext
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+    }
+
+    public DbSet<Stagiaire> Stagiaires => Set<Stagiaire>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Stagiaire>(entity =>
         {
-        }
+            entity.ToTable("Stagiaires");
+            entity.HasKey(s => s.Id);
 
-        public DbSet<DemandeStage> DemandesStage { get; set; } = null!;
+            entity.Property(s => s.Nom).IsRequired().HasMaxLength(80);
+            entity.Property(s => s.Prenom).IsRequired().HasMaxLength(80);
+            entity.Property(s => s.Email).IsRequired().HasMaxLength(150);
+            entity.Property(s => s.Telephone).HasMaxLength(20);
+            entity.Property(s => s.Etablissement).IsRequired().HasMaxLength(150);
+            entity.Property(s => s.Specialite).HasMaxLength(120);
+            entity.Property(s => s.Sujet).HasMaxLength(250);
+            entity.Property(s => s.Departement).HasMaxLength(120);
+            entity.Property(s => s.Statut).HasConversion<int>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            // Donnees initiales pour la demonstration.
-            modelBuilder.Entity<DemandeStage>().HasData(
-                new DemandeStage
-                {
-                    Id = 1,
-                    Sujet = "Developpement d'une plateforme de gestion des stages",
-                    Description = "Conception et developpement d'une application ASP.NET MVC pour dematerialiser la gestion des stages.",
-                    NomStagiaire = "Ahmed Zhiri",
-                    EmailStagiaire = "ahmed.zhiri@centrale-casablanca.ma",
-                    Entreprise = "ONEE - Direction des Systemes d'Information",
-                    Encadrant = "Mr. Encadrant DSI",
-                    DateDebut = new DateTime(2026, 7, 1),
-                    DateFin = new DateTime(2026, 8, 31),
-                    TypeStage = TypeStage.Decouverte,
-                    Etat = EtatDemande.EnCours,
-                    DateCreation = new DateTime(2026, 6, 15)
-                },
-                new DemandeStage
-                {
-                    Id = 2,
-                    Sujet = "Analyse de donnees hydrogeologiques",
-                    Description = "Traitement statistique et modelisation ML sur donnees SNMR.",
-                    NomStagiaire = "Etudiant Test",
-                    EmailStagiaire = "test@centrale-casablanca.ma",
-                    Entreprise = "Laboratoire de Recherche",
-                    Encadrant = "Dr. Belhboub",
-                    DateDebut = new DateTime(2026, 9, 1),
-                    DateFin = new DateTime(2027, 2, 28),
-                    TypeStage = TypeStage.FinEtudes,
-                    Etat = EtatDemande.Soumise,
-                    DateCreation = new DateTime(2026, 8, 1)
-                }
-            );
-        }
+            // Un email de stagiaire est unique.
+            entity.HasIndex(s => s.Email).IsUnique();
+        });
     }
 }

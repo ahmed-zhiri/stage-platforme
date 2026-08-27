@@ -1,22 +1,32 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f7fb;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 .navbar-brand {
-    font-weight: 600;
-}
-
-.card {
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    letter-spacing: .3px;
 }
 
 .table thead th {
-    font-weight: 500;
-    border: none;
+    white-space: nowrap;
 }
 
-footer {
-    background-color: #ffffff;
+/* Conteneur des notifications AJAX (toasts) */
+#toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1080;
+    min-width: 280px;
 }

@@ -1,0 +1,27 @@
+@model StagiaireDto
+@{
+    ViewData["Title"] = "Supprimer le stagiaire";
+}
+
+<h1 class="h3 mb-3 text-danger"><i class="bi bi-trash"></i> Supprimer le stagiaire</h1>
+
+<div class="alert alert-warning">
+    Êtes-vous sûr de vouloir supprimer définitivement ce stagiaire ?
+</div>
+
+<div class="card shadow-sm mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Nom complet</dt><dd class="col-sm-9">@Model.NomComplet</dd>
+            <dt class="col-sm-3">Email</dt><dd class="col-sm-9">@Model.Email</dd>
+            <dt class="col-sm-3">Établissement</dt><dd class="col-sm-9">@Model.Etablissement</dd>
+            <dt class="col-sm-3">Statut</dt><dd class="col-sm-9">@Model.StatutLibelle</dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Confirmer la suppression</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Annuler</a>
+</form>

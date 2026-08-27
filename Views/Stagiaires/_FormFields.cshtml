@@ -1,0 +1,59 @@
+@model GestionStagiaires.Web.DTOs.StagiaireCreateDto
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="Nom" class="form-label"></label>
+        <input asp-for="Nom" class="form-control" />
+        <span asp-validation-for="Nom" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Prenom" class="form-label"></label>
+        <input asp-for="Prenom" class="form-control" />
+        <span asp-validation-for="Prenom" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" type="email" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Telephone" class="form-label"></label>
+        <input asp-for="Telephone" class="form-control" />
+        <span asp-validation-for="Telephone" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Etablissement" class="form-label"></label>
+        <input asp-for="Etablissement" class="form-control" />
+        <span asp-validation-for="Etablissement" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Specialite" class="form-label"></label>
+        <input asp-for="Specialite" class="form-control" />
+        <span asp-validation-for="Specialite" class="text-danger"></span>
+    </div>
+    <div class="col-12">
+        <label asp-for="Sujet" class="form-label"></label>
+        <input asp-for="Sujet" class="form-control" />
+        <span asp-validation-for="Sujet" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Departement" class="form-label"></label>
+        <input asp-for="Departement" class="form-control" />
+        <span asp-validation-for="Departement" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Statut" class="form-label"></label>
+        <select asp-for="Statut" class="form-select" asp-items="Html.GetEnumSelectList<StatutStage>()"></select>
+        <span asp-validation-for="Statut" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="DateDebut" class="form-label"></label>
+        <input asp-for="DateDebut" class="form-control" type="date" />
+        <span asp-validation-for="DateDebut" class="text-danger"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="DateFin" class="form-label"></label>
+        <input asp-for="DateFin" class="form-control" type="date" />
+        <span asp-validation-for="DateFin" class="text-danger"></span>
+    </div>
+</div>

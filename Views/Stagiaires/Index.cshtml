@@ -1,0 +1,165 @@
+@model StagiaireListViewModel
+@{
+    ViewData["Title"] = "Stagiaires";
+    var page = Model.Page;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0"><i class="bi bi-people-fill text-primary"></i> Stagiaires</h1>
+    <a class="btn btn-success" asp-action="Create">
+        <i class="bi bi-plus-circle"></i> Nouveau stagiaire
+    </a>
+</div>
+
+<!-- Recherche et filtre -->
+<form method="get" asp-action="Index" class="row g-2 align-items-end mb-3">
+    <div class="col-md-5">
+        <label class="form-label">Recherche</label>
+        <input type="text" name="recherche" value="@Model.Recherche" class="form-control"
+               placeholder="Nom, prénom, email, établissement..." />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Statut</label>
+        <select name="statut" class="form-select" asp-items="Html.GetEnumSelectList<StatutStage>()">
+            <option value="">-- Tous --</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Par page</label>
+        <select name="pageSize" class="form-select">
+            @foreach (var size in new[] { 5, 10, 20, 50 })
+            {
+                if (size == Model.PageSize)
+                {
+                    <option value="@size" selected>@size</option>
+                }
+                else
+                {
+                    <option value="@size">@size</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Filtrer</button>
+    </div>
+</form>
+
+<div class="text-muted small mb-2">
+    @page.TotalItems stagiaire(s) trouvé(s) — page @page.PageNumber / @(page.TotalPages == 0 ? 1 : page.TotalPages)
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover align-middle bg-white shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Nom complet</th>
+                <th>Email</th>
+                <th>Établissement</th>
+                <th>Période</th>
+                <th>Statut</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!page.Items.Any())
+            {
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">Aucun stagiaire à afficher.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var s in page.Items)
+                {
+                    <tr id="row-@s.Id">
+                        <td class="fw-semibold">@s.NomComplet</td>
+                        <td>@s.Email</td>
+                        <td>@s.Etablissement</td>
+                        <td>@s.DateDebut.ToString("dd/MM/yyyy") → @s.DateFin.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge @StatutBadge(s.Statut)">@s.StatutLibelle</span>
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@s.Id" title="Détails"><i class="bi bi-eye"></i></a>
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@s.Id" title="Modifier"><i class="bi bi-pencil"></i></a>
+                            <button type="button" class="btn btn-sm btn-outline-danger js-delete"
+                                    data-id="@s.Id" data-nom="@s.NomComplet" title="Supprimer (AJAX)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+@if (page.TotalPages > 1)
+{
+    <nav aria-label="Pagination des stagiaires">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(page.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-recherche="@Model.Recherche"
+                   asp-route-statut="@Model.Statut"
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-page="@(page.PageNumber - 1)">Précédent</a>
+            </li>
+            @for (int i = 1; i <= page.TotalPages; i++)
+            {
+                <li class="page-item @(i == page.PageNumber ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-recherche="@Model.Recherche"
+                       asp-route-statut="@Model.Statut"
+                       asp-route-pageSize="@Model.PageSize"
+                       asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(page.HasNextPage ? "" : "disabled")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-recherche="@Model.Recherche"
+                   asp-route-statut="@Model.Statut"
+                   asp-route-pageSize="@Model.PageSize"
+                   asp-route-page="@(page.PageNumber + 1)">Suivant</a>
+            </li>
+        </ul>
+    </nav>
+}
+
+@functions {
+    static string StatutBadge(StatutStage statut) => statut switch
+    {
+        StatutStage.EnCours => "bg-primary",
+        StatutStage.Termine => "bg-success",
+        StatutStage.Annule => "bg-danger",
+        _ => "bg-secondary"
+    };
+}
+
+@section Scripts {
+    <script>
+        // Suppression AJAX via l'API REST /api/stagiaires/{id}
+        $(function () {
+            $('.js-delete').on('click', function () {
+                const id = $(this).data('id');
+                const nom = $(this).data('nom');
+                if (!confirm('Supprimer le stagiaire « ' + nom + ' » ?')) return;
+
+                $.ajax({
+                    url: '/api/stagiaires/' + id,
+                    type: 'DELETE'
+                }).done(function () {
+                    $('#row-' + id).fadeOut(300, function () { $(this).remove(); });
+                    window.showToast('Stagiaire supprimé avec succès.', 'success');
+                }).fail(function (xhr) {
+                    window.showToast('Échec de la suppression (code ' + xhr.status + ').', 'danger');
+                });
+            });
+        });
+    </script>
+}
