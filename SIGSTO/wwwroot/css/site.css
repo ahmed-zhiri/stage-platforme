@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f5f7fa;
     color: #333;
     line-height: 1.6;
@@ -32,10 +32,12 @@ a:hover {
 }
 
 .navbar-brand {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #0d6efd;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #1a1a1a;
     text-decoration: none;
+    letter-spacing: -0.01em;
 }
 
 .navbar-nav {
@@ -284,8 +286,11 @@ tr:hover {
 .auth-card h1 {
     text-align: center;
     margin-bottom: 0.3rem;
-    font-size: 1.5rem;
-    color: #0d6efd;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    letter-spacing: -0.01em;
 }
 
 .auth-card .subtitle {
