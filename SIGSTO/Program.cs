@@ -47,8 +47,8 @@ using (var scope = app.Services.CreateScope())
     {
         db.Encadrants.Add(new Encadrant
         {
-            Nom = "Dupont",
-            Prenom = "Jean",
+            Nom = "El horre",
+            Prenom = "Abdellilah",
             Email = "encadrant@onee.ma",
             Password = BCryptHash("encadrant123"),
             EmailVerifie = true,
