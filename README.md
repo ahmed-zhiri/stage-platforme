@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎓 Gestion des Stagiaires
+#  Gestion des Stagiaires
 
 ### Application web de gestion des stagiaires pour un organisme d'accueil
 
@@ -22,7 +22,7 @@
 
 ---
 
-## 📑 Sommaire
+##  Sommaire
 
 - [Aperçu](#-aperçu)
 - [Fonctionnalités](#-fonctionnalités)
@@ -38,7 +38,7 @@
 
 ---
 
-## 🔎 Aperçu
+##  Aperçu
 
 Cette application permet à un organisme d'accueil de **gérer ses stagiaires** de bout en bout :
 saisie, consultation, recherche, mise à jour et suppression, le tout derrière une
@@ -47,20 +47,20 @@ saisie, consultation, recherche, mise à jour et suppression, le tout derrière 
 ASP.NET Core : `DbContext`, injection de dépendances, DTO / ViewModel, AutoMapper, validation
 et pagination.
 
-## ✨ Fonctionnalités
+##  Fonctionnalités
 
 | | Fonctionnalité | Détail |
 |:--:|----------------|--------|
-| 🔐 | **Authentification** | Connexion, inscription, déconnexion, rôle *Administrateur* (ASP.NET Core Identity) |
-| 🗂️ | **CRUD complet** | Créer, consulter, modifier et supprimer un stagiaire |
-| 🔎 | **Recherche & filtre** | Par nom, prénom, email, établissement + filtre par statut |
-| 📄 | **Pagination** | Configurable (5 / 10 / 20 / 50 par page) |
-| ⚡ | **AJAX** | Suppression sans rechargement via l'API REST + notifications *toast* |
-| ✅ | **Validation** | Côté serveur (DataAnnotations + `IValidatableObject`) **et** côté client (jQuery) |
-| 🔄 | **AutoMapper** | Mapping automatique *Entité ⇄ DTO / ViewModel* |
-| 🏗️ | **Injection de dépendances** | Couche service abstraite (`IStagiaireService`) |
+| | **Authentification** | Connexion, inscription, déconnexion, rôle *Administrateur* (ASP.NET Core Identity) |
+| | **CRUD complet** | Créer, consulter, modifier et supprimer un stagiaire |
+| | **Recherche & filtre** | Par nom, prénom, email, établissement + filtre par statut |
+| | **Pagination** | Configurable (5 / 10 / 20 / 50 par page) |
+| | **AJAX** | Suppression sans rechargement via l'API REST + notifications *toast* |
+| | **Validation** | Côté serveur (DataAnnotations + `IValidatableObject`) **et** côté client (jQuery) |
+| | **AutoMapper** | Mapping automatique *Entité ⇄ DTO / ViewModel* |
+| | **Injection de dépendances** | Couche service abstraite (`IStagiaireService`) |
 
-## 🧰 Pile technique
+##  Pile technique
 
 <div align="center">
 
@@ -75,7 +75,7 @@ et pagination.
 
 </div>
 
-## 🗂️ Architecture du projet
+##  Architecture du projet
 
 ```
 GestionStagiaires.sln
@@ -107,13 +107,13 @@ GestionStagiaires.sln
     └── wwwroot/       → css/site.css, js/site.js (helper AJAX)
 ```
 
-## 📋 Prérequis
+##  Prérequis
 
 - [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
 - **SQL Server** ou **SQL Server LocalDB** (installé avec Visual Studio)
 - *(Déploiement)* **IIS** + [ASP.NET Core Hosting Bundle](https://dotnet.microsoft.com/permalink/dotnetcore-current-windows-runtime-bundle-installer)
 
-## 🚀 Démarrage rapide
+##  Démarrage rapide
 
 ```bash
 # 1. Restaurer les dépendances
@@ -123,7 +123,7 @@ dotnet restore
 dotnet run --project src/GestionStagiaires.Web
 ```
 
-Puis ouvrez 👉 **https://localhost:7001**
+Puis ouvrez  **https://localhost:7001**
 
 > [!NOTE]
 > Au **premier démarrage**, l'application applique automatiquement la **migration Code First**
@@ -136,7 +136,7 @@ La chaîne de connexion par défaut (`appsettings.json`) cible LocalDB :
 Server=(localdb)\MSSQLLocalDB;Database=GestionStagiairesDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True
 ```
 
-## 🔑 Compte de démonstration
+## Compte de démonstration
 
 | Email | Mot de passe |
 |-------|--------------|
@@ -145,7 +145,7 @@ Server=(localdb)\MSSQLLocalDB;Database=GestionStagiairesDb;Trusted_Connection=Tr
 > [!WARNING]
 > Identifiants de démonstration — à modifier dans `appsettings.json` (section `SeedAdmin`) avant tout usage réel.
 
-## 🧬 Migrations Code First
+##  Migrations Code First
 
 ```bash
 # Installer l'outil EF (une seule fois)
@@ -158,7 +158,7 @@ dotnet ef migrations add NomDeLaMigration --project src/GestionStagiaires.Web
 dotnet ef database update --project src/GestionStagiaires.Web
 ```
 
-## 🌐 API REST
+##  API REST
 
 Base : `/api/stagiaires` — authentification requise (cookie Identity).
 
@@ -173,7 +173,7 @@ Base : `/api/stagiaires` — authentification requise (cookie Identity).
 Le front-office consomme cette API en **AJAX** (voir la suppression dans
 `Views/Stagiaires/Index.cshtml` + `wwwroot/js/site.js`).
 
-## 🖥️ Déploiement sur IIS
+##  Déploiement sur IIS
 
 ```bash
 # Publier l'application
@@ -185,7 +185,7 @@ dotnet publish src/GestionStagiaires.Web -c Release -o ./publish
 3. Pool d'applications en **« No Managed Code »** (exécution *in-process* via l'ASP.NET Core Module).
 4. Ajuster la chaîne de connexion (`appsettings.json`) vers le SQL Server de production.
 
-## ✅ Correspondance des exigences
+##  Correspondance des exigences
 
 | Exigence | Implémentation |
 |----------|----------------|
