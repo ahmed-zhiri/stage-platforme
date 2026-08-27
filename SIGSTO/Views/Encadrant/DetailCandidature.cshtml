@@ -1,0 +1,58 @@
+@model SIGSTO.Models.Candidature
+@{
+    ViewData["Title"] = "Detail stagiaire";
+}
+
+<div class="page-header">
+    <h1>Stagiaire: @Model.Etudiant?.Prenom @Model.Etudiant?.Nom</h1>
+    <a href="/Encadrant/Dashboard" class="btn btn-secondary">Retour</a>
+</div>
+
+<div class="card">
+    <h3>Informations</h3>
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Email</label>
+            <p>@Model.Etudiant?.Email</p>
+        </div>
+        <div class="detail-item">
+            <label>Offre</label>
+            <p>@Model.Offre?.Titre</p>
+        </div>
+        <div class="detail-item">
+            <label>Type</label>
+            <p>@Model.Offre?.Type</p>
+        </div>
+        <div class="detail-item">
+            <label>Statut</label>
+            <p><span class="badge badge-@Model.StatutCandidature.ToString().ToLower()">@Model.StatutCandidature</span></p>
+        </div>
+    </div>
+</div>
+
+@if (Model.AccordDeStage != null)
+{
+    <div class="card">
+        <h3>Accord de stage</h3>
+        <p>Theme: @Model.AccordDeStage.Theme</p>
+        <p>Periode: @Model.AccordDeStage.Periode</p>
+    </div>
+}
+
+@if (Model.Evaluation != null)
+{
+    <div class="card">
+        <h3>Evaluation</h3>
+        <p>Note: @Model.Evaluation.Note / 20</p>
+        <p>Appreciation: @Model.Evaluation.Appreciation</p>
+        <p>Date: @Model.Evaluation.DateEvaluation.ToString("dd/MM/yyyy")</p>
+    </div>
+}
+else
+{
+    <a href="/Encadrant/Evaluer?candidatureId=@Model.Id" class="btn btn-success">Evaluer ce stagiaire</a>
+}
+
+<div style="margin-top:1rem">
+    <a href="/Message/Conversation?etudiantId=@Model.EtudiantId&encadrantId=@(Context.Session.GetInt32("UserId"))" class="btn btn-primary">Messages</a>
+</div>

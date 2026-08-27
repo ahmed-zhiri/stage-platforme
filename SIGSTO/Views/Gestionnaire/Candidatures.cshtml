@@ -1,0 +1,53 @@
+@using SIGSTO.Models
+@model List<Candidature>
+@{
+    ViewData["Title"] = "Candidatures";
+    var offre = ViewBag.Offre as Offre;
+}
+
+<div class="page-header">
+    <h1>Candidatures - @offre?.Titre</h1>
+    <a href="/Gestionnaire/Dashboard" class="btn btn-secondary">Retour</a>
+</div>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="card empty-state">
+        <p>Aucune candidature pour cette offre.</p>
+    </div>
+}
+else
+{
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Etudiant</th>
+                    <th>Score CV</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Encadrant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.Etudiant?.Prenom @c.Etudiant?.Nom</td>
+                        <td>
+                            <span class="score-bar"><span class="score-fill" style="width:@c.Score%"></span></span>
+                            @c.Score.ToString("F1")%
+                        </td>
+                        <td>@c.DateSoumission.ToString("dd/MM/yyyy")</td>
+                        <td><span class="badge badge-@c.StatutCandidature.ToString().ToLower()">@c.StatutCandidature</span></td>
+                        <td>@(c.Encadrant != null ? c.Encadrant.Prenom + " " + c.Encadrant.Nom : "-")</td>
+                        <td>
+                            <a href="/Gestionnaire/DetailCandidature/@c.Id" class="btn btn-sm btn-primary">Gerer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

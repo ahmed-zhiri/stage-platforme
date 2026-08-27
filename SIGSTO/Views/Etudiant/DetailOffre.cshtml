@@ -1,0 +1,62 @@
+@model SIGSTO.Models.Offre
+@{
+    ViewData["Title"] = Model.Titre;
+}
+
+<div class="page-header">
+    <h1>@Model.Titre</h1>
+    <a href="/Etudiant/Offres" class="btn btn-secondary">Retour</a>
+</div>
+
+<div class="card">
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Type</label>
+            <p>@Model.Type</p>
+        </div>
+        <div class="detail-item">
+            <label>Filiere</label>
+            <p>@Model.Filiere</p>
+        </div>
+        <div class="detail-item">
+            <label>Places</label>
+            <p>@Model.NbrPlaces</p>
+        </div>
+        <div class="detail-item">
+            <label>Statut</label>
+            <p><span class="badge badge-@Model.Statut.ToString().ToLower()">@Model.Statut</span></p>
+        </div>
+        <div class="detail-item">
+            <label>Date debut</label>
+            <p>@Model.DateDebut.ToString("dd/MM/yyyy")</p>
+        </div>
+        <div class="detail-item">
+            <label>Date fin</label>
+            <p>@Model.DateFin.ToString("dd/MM/yyyy")</p>
+        </div>
+    </div>
+    <div style="margin-top:1rem">
+        <label style="font-size:0.8rem; color:#888; text-transform:uppercase">Description</label>
+        <p>@Model.Description</p>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.MotsCles))
+    {
+        <div style="margin-top:0.8rem">
+            <label style="font-size:0.8rem; color:#888; text-transform:uppercase">Mots-cles</label>
+            <p>@Model.MotsCles</p>
+        </div>
+    }
+    <div style="margin-top:1rem">
+        <label style="font-size:0.8rem; color:#888; text-transform:uppercase">Date limite</label>
+        <p>@Model.DateLimitePostule.ToString("dd/MM/yyyy")</p>
+    </div>
+</div>
+
+@if (!(bool)(ViewBag.DejaPostule ?? false))
+{
+    <a href="/Etudiant/Postuler/@Model.Id" class="btn btn-primary">Postuler a cette offre</a>
+}
+else
+{
+    <div class="alert alert-info">Vous avez deja postule a cette offre.</div>
+}

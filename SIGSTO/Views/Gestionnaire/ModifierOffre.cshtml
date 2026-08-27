@@ -1,0 +1,71 @@
+@model SIGSTO.Models.Offre
+@{
+    ViewData["Title"] = "Modifier l'offre";
+}
+
+<div class="page-header">
+    <h1>Modifier l'offre</h1>
+    <a href="/Gestionnaire/Dashboard" class="btn btn-secondary">Retour</a>
+</div>
+
+<div class="card">
+    <form method="post">
+        <div class="form-group">
+            <label>Titre</label>
+            <input type="text" name="Titre" class="form-control" value="@Model.Titre" required />
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Filiere</label>
+                <input type="text" name="Filiere" class="form-control" value="@Model.Filiere" />
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                @{ var typeVal = (int)Model.Type; }
+                <select name="Type" class="form-control">
+                    @if (typeVal == 0) { <option value="0" selected="selected">OBS</option> } else { <option value="0">OBS</option> }
+                    @if (typeVal == 1) { <option value="1" selected="selected">PFA</option> } else { <option value="1">PFA</option> }
+                    @if (typeVal == 2) { <option value="2" selected="selected">PFE</option> } else { <option value="2">PFE</option> }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="Description" class="form-control">@Model.Description</textarea>
+        </div>
+        <div class="form-group">
+            <label>Mots-cles</label>
+            <input type="text" name="MotsCles" class="form-control" value="@Model.MotsCles" />
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre de places</label>
+                <input type="number" name="NbrPlaces" class="form-control" value="@Model.NbrPlaces" min="1" />
+            </div>
+            <div class="form-group">
+                <label>Date limite de candidature</label>
+                <input type="date" name="DateLimitePostule" class="form-control" value="@Model.DateLimitePostule.ToString("yyyy-MM-dd")" required />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Date de debut</label>
+                <input type="date" name="DateDebut" class="form-control" value="@Model.DateDebut.ToString("yyyy-MM-dd")" required />
+            </div>
+            <div class="form-group">
+                <label>Date de fin</label>
+                <input type="date" name="DateFin" class="form-control" value="@Model.DateFin.ToString("yyyy-MM-dd")" required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Statut</label>
+            @{ var statutVal = (int)Model.Statut; }
+            <select name="Statut" class="form-control">
+                @if (statutVal == 0) { <option value="0" selected="selected">Ouvert</option> } else { <option value="0">Ouvert</option> }
+                @if (statutVal == 1) { <option value="1" selected="selected">Ferme</option> } else { <option value="1">Ferme</option> }
+                @if (statutVal == 2) { <option value="2" selected="selected">Pourvue</option> } else { <option value="2">Pourvue</option> }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    </form>
+</div>

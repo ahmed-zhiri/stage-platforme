@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Verification OTP";
+    Layout = "_Layout";
+}
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Verification OTP</h1>
+        <p class="subtitle">Un code a 6 chiffres a ete envoye a votre email</p>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form method="post">
+            <input type="hidden" name="userId" value="@ViewBag.UserId" />
+            <div class="form-group">
+                <label>Code OTP (6 chiffres)</label>
+                <input type="text" name="otpCode" class="form-control" maxlength="6" pattern="[0-9]{6}" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Verifier</button>
+        </form>
+
+        <div class="links" style="margin-top:1.2rem">
+            <p>Vous n'avez pas recu le code ?</p>
+            <form method="post" action="/Auth/RenvoyerOTP" style="display:inline">
+                <input type="hidden" name="userId" value="@ViewBag.UserId" />
+                <button type="submit" class="btn btn-sm btn-secondary">Renvoyer le code</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+@using SIGSTO.Models
+@{
+    ViewData["Title"] = "Gestionnaire - Tableau de bord";
+    var offres = ViewBag.Offres as List<Offre>;
+    var totalCandidatures = (int)(ViewBag.TotalCandidatures ?? 0);
+}
+
+<div class="page-header">
+    <h1>Tableau de bord - Gestionnaire</h1>
+    <a href="/Gestionnaire/CreerOffre" class="btn btn-primary">Nouvelle offre</a>
+</div>
+
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-value">@(offres?.Count ?? 0)</div>
+        <div class="stat-label">Offres</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@(offres?.Count(o => o.Statut == StatutOffre.Ouvert) ?? 0)</div>
+        <div class="stat-label">Ouvertes</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@totalCandidatures</div>
+        <div class="stat-label">Candidatures totales</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Mes offres</h3>
+
+    @if (offres == null || offres.Count == 0)
+    {
+        <div class="empty-state">
+            <p>Aucune offre creee pour le moment.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Type</th>
+                    <th>Places</th>
+                    <th>Limite</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offre in offres)
+                {
+                    <tr>
+                        <td>@offre.Titre</td>
+                        <td>@offre.Type</td>
+                        <td>@offre.NbrPlaces</td>
+                        <td>@offre.DateLimitePostule.ToString("dd/MM/yyyy")</td>
+                        <td><span class="badge badge-@offre.Statut.ToString().ToLower()">@offre.Statut</span></td>
+                        <td>
+                            <a href="/Gestionnaire/Candidatures?offreId=@offre.Id" class="btn btn-sm btn-primary">Candidatures</a>
+                            <a href="/Gestionnaire/ModifierOffre/@offre.Id" class="btn btn-sm btn-secondary">Modifier</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

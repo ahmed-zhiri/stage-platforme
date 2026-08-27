@@ -1,0 +1,62 @@
+@using SIGSTO.Models
+@model List<Message>
+@{
+    ViewData["Title"] = "Messages";
+    var role = ViewBag.Role as string;
+    var otherUser = ViewBag.OtherUser as Utilisateur;
+    var etudiantId = (int)ViewBag.EtudiantId;
+    var encadrantId = (int)ViewBag.EncadrantId;
+}
+
+<div class="page-header">
+    <h1>Conversation avec @otherUser?.Prenom @otherUser?.Nom</h1>
+    @if (role == "Etudiant")
+    {
+        <a href="/Etudiant/Dashboard" class="btn btn-secondary">Retour</a>
+    }
+    else
+    {
+        <a href="/Encadrant/Dashboard" class="btn btn-secondary">Retour</a>
+    }
+</div>
+
+<div class="card">
+    <div class="message-list">
+        @if (Model == null || Model.Count == 0)
+        {
+            <div class="empty-state">
+                <p>Aucun message pour le moment. Commencez la conversation !</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var msg in Model)
+            {
+                var isSent = (role == "Etudiant" && msg.Expediteur == ExpediteurMessage.Etudiant)
+                          || (role == "Encadrant" && msg.Expediteur == ExpediteurMessage.Encadrant);
+                <div class="message-item @(isSent ? "message-sent" : "message-received")">
+                    <div>@msg.Contenu</div>
+                    @if (!string.IsNullOrEmpty(msg.CheminFichier))
+                    {
+                        <div style="margin-top:0.3rem">
+                            <a href="@msg.CheminFichier" target="_blank" style="color:@(isSent ? "#ccc" : "#0d6efd"); font-size:0.85rem">Fichier joint</a>
+                        </div>
+                    }
+                    <div class="message-meta">@msg.DateEnvoi.ToString("dd/MM/yyyy HH:mm")</div>
+                </div>
+            }
+        }
+    </div>
+
+    <form method="post" action="/Message/Envoyer" enctype="multipart/form-data" style="display:flex; gap:0.5rem; align-items:end">
+        <input type="hidden" name="etudiantId" value="@etudiantId" />
+        <input type="hidden" name="encadrantId" value="@encadrantId" />
+        <div style="flex:1">
+            <input type="text" name="contenu" class="form-control" placeholder="Votre message..." required />
+        </div>
+        <div>
+            <input type="file" name="fichier" class="form-control" style="width:200px" />
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+</div>

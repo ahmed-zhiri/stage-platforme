@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SIGSTO</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var role = Context.Session.GetString("Role");
+        var userName = Context.Session.GetString("UserName");
+        var userId = Context.Session.GetInt32("UserId");
+    }
+
+    @if (userId != null)
+    {
+        <nav class="navbar">
+            <a class="navbar-brand" href="/">SIGSTO</a>
+            <ul class="navbar-nav">
+                @if (role == "Etudiant")
+                {
+                    <li><a href="/Etudiant/Dashboard">Tableau de bord</a></li>
+                    <li><a href="/Etudiant/Offres">Offres</a></li>
+                    <li><a href="/Etudiant/Profil">Mon profil</a></li>
+                }
+                else if (role == "Gestionnaire")
+                {
+                    <li><a href="/Gestionnaire/Dashboard">Tableau de bord</a></li>
+                    <li><a href="/Gestionnaire/CreerOffre">Nouvelle offre</a></li>
+                    <li><a href="/Gestionnaire/Encadrants">Encadrants</a></li>
+                }
+                else if (role == "Encadrant")
+                {
+                    <li><a href="/Encadrant/Dashboard">Tableau de bord</a></li>
+                }
+            </ul>
+            <div class="navbar-user">
+                <span>@userName</span>
+                <a href="/Auth/Logout" class="btn btn-sm btn-secondary">Deconnexion</a>
+            </div>
+        </nav>
+    }
+
+    <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </div>
+</body>
+</html>

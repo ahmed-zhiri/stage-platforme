@@ -1,0 +1,46 @@
+@model List<SIGSTO.Models.Offre>
+@{
+    ViewData["Title"] = "Offres de stage";
+}
+
+<div class="page-header">
+    <h1>Offres de stage disponibles</h1>
+</div>
+
+@if (Model == null || Model.Count == 0)
+{
+    <div class="card empty-state">
+        <p>Aucune offre disponible pour le moment.</p>
+    </div>
+}
+else
+{
+    @foreach (var offre in Model)
+    {
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:start">
+                <div>
+                    <h3 style="margin-bottom:0.3rem">@offre.Titre</h3>
+                    <p style="color:#888; font-size:0.85rem">
+                        @offre.Type | @offre.Filiere | @offre.NbrPlaces place(s)
+                    </p>
+                </div>
+                <span class="badge badge-ouvert">@offre.Statut</span>
+            </div>
+            <p style="margin:0.8rem 0">@offre.Description</p>
+            <div style="display:flex; gap:2rem; font-size:0.85rem; color:#666; margin-bottom:0.8rem">
+                <span>Debut: @offre.DateDebut.ToString("dd/MM/yyyy")</span>
+                <span>Fin: @offre.DateFin.ToString("dd/MM/yyyy")</span>
+                <span>Limite: @offre.DateLimitePostule.ToString("dd/MM/yyyy")</span>
+            </div>
+            @if (!string.IsNullOrEmpty(offre.MotsCles))
+            {
+                <p style="font-size:0.85rem; color:#888">Mots-cles: @offre.MotsCles</p>
+            }
+            <div style="margin-top:0.8rem">
+                <a href="/Etudiant/Postuler/@offre.Id" class="btn btn-primary">Postuler</a>
+                <a href="/Etudiant/DetailOffre/@offre.Id" class="btn btn-secondary">Details</a>
+            </div>
+        </div>
+    }
+}

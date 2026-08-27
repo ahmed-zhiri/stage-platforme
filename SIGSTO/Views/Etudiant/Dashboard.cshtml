@@ -1,0 +1,76 @@
+@using SIGSTO.Models
+@{
+    ViewData["Title"] = "Tableau de bord";
+    var etudiant = ViewBag.Etudiant as Etudiant;
+    var candidatures = ViewBag.Candidatures as List<Candidature>;
+}
+
+<div class="page-header">
+    <h1>Bonjour, @etudiant?.Prenom !</h1>
+    <a href="/Etudiant/Offres" class="btn btn-primary">Parcourir les offres</a>
+</div>
+
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-value">@(candidatures?.Count ?? 0)</div>
+        <div class="stat-label">Candidatures</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@(candidatures?.Count(c => c.StatutCandidature == StatutCandidature.Acceptee) ?? 0)</div>
+        <div class="stat-label">Acceptees</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@(candidatures?.Count(c => c.StatutCandidature == StatutCandidature.EnCours) ?? 0)</div>
+        <div class="stat-label">En cours</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Mes candidatures</h3>
+
+    @if (candidatures == null || candidatures.Count == 0)
+    {
+        <div class="empty-state">
+            <p>Vous n'avez pas encore de candidatures.</p>
+            <a href="/Etudiant/Offres" class="btn btn-primary" style="margin-top:1rem">Voir les offres disponibles</a>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Offre</th>
+                    <th>Type</th>
+                    <th>Date de soumission</th>
+                    <th>Statut</th>
+                    <th>Encadrant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in candidatures)
+                {
+                    <tr>
+                        <td>@c.Offre?.Titre</td>
+                        <td>@c.Offre?.Type</td>
+                        <td>@c.DateSoumission.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="badge badge-@c.StatutCandidature.ToString().ToLower()">
+                                @c.StatutCandidature
+                            </span>
+                        </td>
+                        <td>@(c.Encadrant != null ? c.Encadrant.Prenom + " " + c.Encadrant.Nom : "-")</td>
+                        <td>
+                            <a href="/Etudiant/DetailCandidature/@c.Id" class="btn btn-sm btn-primary">Voir</a>
+                            @if (c.EncadrantId != null)
+                            {
+                                <a href="/Message/Conversation?etudiantId=@c.EtudiantId&encadrantId=@c.EncadrantId" class="btn btn-sm btn-secondary">Messages</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

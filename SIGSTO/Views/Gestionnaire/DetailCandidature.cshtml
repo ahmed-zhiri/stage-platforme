@@ -1,0 +1,189 @@
+@using SIGSTO.Models
+@model Candidature
+@{
+    ViewData["Title"] = "Gerer candidature";
+    var encadrants = ViewBag.Encadrants as List<Encadrant>;
+}
+
+<div class="page-header">
+    <h1>Candidature #@Model.Id</h1>
+    <a href="/Gestionnaire/Candidatures?offreId=@Model.OffreId" class="btn btn-secondary">Retour</a>
+</div>
+
+<!-- Info etudiant -->
+<div class="card">
+    <h3>Etudiant</h3>
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Nom complet</label>
+            <p>@Model.Etudiant?.Prenom @Model.Etudiant?.Nom</p>
+        </div>
+        <div class="detail-item">
+            <label>Email</label>
+            <p>@Model.Etudiant?.Email</p>
+        </div>
+        <div class="detail-item">
+            <label>Score CV</label>
+            <p>
+                <span class="score-bar"><span class="score-fill" style="width:@Model.Score%"></span></span>
+                @Model.Score.ToString("F1")%
+            </p>
+        </div>
+        <div class="detail-item">
+            <label>Statut</label>
+            <p><span class="badge badge-@Model.StatutCandidature.ToString().ToLower()">@Model.StatutCandidature</span></p>
+        </div>
+    </div>
+</div>
+
+<!-- Documents -->
+<div class="card">
+    <h3>Documents</h3>
+    <ul style="list-style:none; padding:0">
+        @if (!string.IsNullOrEmpty(Model.CheminCV))
+        { <li style="margin-bottom:0.3rem"><a href="@Model.CheminCV" target="_blank">CV</a></li> }
+        @if (!string.IsNullOrEmpty(Model.CheminLM))
+        { <li style="margin-bottom:0.3rem"><a href="@Model.CheminLM" target="_blank">Lettre de motivation</a></li> }
+        @if (!string.IsNullOrEmpty(Model.CheminLR))
+        { <li style="margin-bottom:0.3rem"><a href="@Model.CheminLR" target="_blank">Lettre de recommandation</a></li> }
+        @if (!string.IsNullOrEmpty(Model.CheminReleves))
+        { <li style="margin-bottom:0.3rem"><a href="@Model.CheminReleves" target="_blank">Releves de notes</a></li> }
+    </ul>
+</div>
+
+<!-- Changer statut -->
+<div class="card">
+    <h3>Changer le statut</h3>
+    <form method="post" action="/Gestionnaire/ChangerStatut" style="display:flex; gap:0.5rem; align-items:end; flex-wrap:wrap">
+        <input type="hidden" name="candidatureId" value="@Model.Id" />
+        <div class="form-group" style="margin-bottom:0">
+            @{ var sVal = (int)Model.StatutCandidature; }
+            <select name="statut" class="form-control" style="width:auto">
+                @if (sVal == 0) { <option value="0" selected="selected">Soumise</option> } else { <option value="0">Soumise</option> }
+                @if (sVal == 1) { <option value="1" selected="selected">En Analyse</option> } else { <option value="1">En Analyse</option> }
+                @if (sVal == 2) { <option value="2" selected="selected">Convoquee</option> } else { <option value="2">Convoquee</option> }
+                @if (sVal == 3) { <option value="3" selected="selected">Acceptee</option> } else { <option value="3">Acceptee</option> }
+                @if (sVal == 4) { <option value="4" selected="selected">Refusee</option> } else { <option value="4">Refusee</option> }
+                @if (sVal == 5) { <option value="5" selected="selected">En Cours</option> } else { <option value="5">En Cours</option> }
+                @if (sVal == 6) { <option value="6" selected="selected">Cloturee</option> } else { <option value="6">Cloturee</option> }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Appliquer</button>
+    </form>
+</div>
+
+<!-- Convention -->
+<div class="card">
+    <h3>Convention</h3>
+    @if (Model.Convention != null)
+    {
+        <p>Statut: @Model.Convention.Statut</p>
+        @if (!string.IsNullOrEmpty(Model.Convention.CheminConv))
+        { <p><a href="@Model.Convention.CheminConv" target="_blank">Telecharger convention</a></p> }
+        @if (!string.IsNullOrEmpty(Model.Convention.CheminAssurance))
+        { <p><a href="@Model.Convention.CheminAssurance" target="_blank">Telecharger assurance</a></p> }
+    }
+    else
+    {
+        <form method="post" action="/Gestionnaire/AttacherConvention" enctype="multipart/form-data">
+            <input type="hidden" name="candidatureId" value="@Model.Id" />
+            <div class="form-group">
+                <label>Convention (PDF)</label>
+                <input type="file" name="convention" class="form-control" accept=".pdf" />
+            </div>
+            <div class="form-group">
+                <label>Assurance (PDF)</label>
+                <input type="file" name="assurance" class="form-control" accept=".pdf" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Attacher la convention</button>
+        </form>
+    }
+</div>
+
+<!-- Accord de stage -->
+<div class="card">
+    <h3>Accord de stage</h3>
+    @if (Model.AccordDeStage != null)
+    {
+        <p>Theme: @Model.AccordDeStage.Theme</p>
+        <p>Periode: @Model.AccordDeStage.Periode</p>
+        @if (!string.IsNullOrEmpty(Model.AccordDeStage.CheminFichier))
+        { <p><a href="@Model.AccordDeStage.CheminFichier" target="_blank">Telecharger</a></p> }
+    }
+    else
+    {
+        <form method="post" action="/Gestionnaire/AttacherAccord" enctype="multipart/form-data">
+            <input type="hidden" name="candidatureId" value="@Model.Id" />
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Theme</label>
+                    <input type="text" name="theme" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Periode</label>
+                    <input type="text" name="periode" class="form-control" placeholder="01/03/2026 - 30/06/2026" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Fichier (PDF)</label>
+                <input type="file" name="fichier" class="form-control" accept=".pdf" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Attacher l'accord</button>
+        </form>
+    }
+</div>
+
+<!-- Assigner encadrant -->
+<div class="card">
+    <h3>Encadrant</h3>
+    @if (Model.EncadrantId != null)
+    {
+        <p>Encadrant: @Model.Encadrant?.Prenom @Model.Encadrant?.Nom (@Model.Encadrant?.Departement)</p>
+    }
+    else
+    {
+        <form method="post" action="/Gestionnaire/AssignerEncadrant" style="display:flex; gap:0.5rem; align-items:end; flex-wrap:wrap">
+            <input type="hidden" name="candidatureId" value="@Model.Id" />
+            <div class="form-group" style="margin-bottom:0">
+                <label>Choisir un encadrant</label>
+                <select name="encadrantId" class="form-control" style="width:auto">
+                    @if (encadrants != null)
+                    {
+                        @foreach (var enc in encadrants)
+                        {
+                            <option value="@enc.Id">@enc.Prenom @enc.Nom - @enc.Departement</option>
+                        }
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Assigner</button>
+        </form>
+    }
+</div>
+
+<!-- Evaluation & Attestation -->
+@if (Model.Evaluation != null)
+{
+    <div class="card">
+        <h3>Evaluation</h3>
+        <p>Note: @Model.Evaluation.Note / 20</p>
+        <p>Appreciation: @Model.Evaluation.Appreciation</p>
+        <p>Date: @Model.Evaluation.DateEvaluation.ToString("dd/MM/yyyy")</p>
+    </div>
+
+    <div class="card">
+        <h3>Attestation</h3>
+        @if (Model.Attestation != null)
+        {
+            <p>Generee le @Model.Attestation.DateGen.ToString("dd/MM/yyyy")</p>
+            <a href="@Model.Attestation.CheminFichier" target="_blank" class="btn btn-sm btn-primary">Telecharger</a>
+        }
+        else
+        {
+            <form method="post" action="/Gestionnaire/GenererAttestation">
+                <input type="hidden" name="candidatureId" value="@Model.Id" />
+                <button type="submit" class="btn btn-success">Generer l'attestation</button>
+            </form>
+        }
+    </div>
+}

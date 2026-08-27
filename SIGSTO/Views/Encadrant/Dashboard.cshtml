@@ -1,0 +1,62 @@
+@using SIGSTO.Models
+@model List<Candidature>
+@{
+    ViewData["Title"] = "Encadrant - Tableau de bord";
+}
+
+<div class="page-header">
+    <h1>Mes stagiaires</h1>
+</div>
+
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-value">@Model.Count</div>
+        <div class="stat-label">Stagiaires assignes</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.Count(c => c.Evaluation != null)</div>
+        <div class="stat-label">Evalues</div>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="card empty-state">
+        <p>Aucun stagiaire assigne pour le moment.</p>
+    </div>
+}
+else
+{
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Etudiant</th>
+                    <th>Offre</th>
+                    <th>Statut</th>
+                    <th>Evalue</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>@c.Etudiant?.Prenom @c.Etudiant?.Nom</td>
+                        <td>@c.Offre?.Titre</td>
+                        <td><span class="badge badge-@c.StatutCandidature.ToString().ToLower()">@c.StatutCandidature</span></td>
+                        <td>@(c.Evaluation != null ? "Oui" : "Non")</td>
+                        <td>
+                            <a href="/Encadrant/DetailCandidature/@c.Id" class="btn btn-sm btn-primary">Voir</a>
+                            @if (c.Evaluation == null)
+                            {
+                                <a href="/Encadrant/Evaluer?candidatureId=@c.Id" class="btn btn-sm btn-success">Evaluer</a>
+                            }
+                            <a href="/Message/Conversation?etudiantId=@c.EtudiantId&encadrantId=@(Context.Session.GetInt32("UserId"))" class="btn btn-sm btn-secondary">Messages</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

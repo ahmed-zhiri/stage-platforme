@@ -427,3 +427,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# SQLite database
+*.db
+*.db-wal
+*.db-shm
+
+# Uploads
+wwwroot/uploads/
+
+# Secrets - development settings with SMTP password
+appsettings.Development.json

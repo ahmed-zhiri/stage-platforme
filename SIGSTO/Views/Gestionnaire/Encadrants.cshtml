@@ -1,0 +1,40 @@
+@model List<SIGSTO.Models.Encadrant>
+@{
+    ViewData["Title"] = "Encadrants";
+}
+
+<div class="page-header">
+    <h1>Encadrants</h1>
+    <a href="/Gestionnaire/CreerEncadrant" class="btn btn-primary">Nouvel encadrant</a>
+</div>
+
+<div class="card">
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="empty-state">
+            <p>Aucun encadrant enregistre.</p>
+        </div>
+    }
+    else
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Departement</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var enc in Model)
+                {
+                    <tr>
+                        <td>@enc.Prenom @enc.Nom</td>
+                        <td>@enc.Email</td>
+                        <td>@enc.Departement</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Postuler";
+    var offre = ViewBag.Offre as SIGSTO.Models.Offre;
+}
+
+<div class="page-header">
+    <h1>Postuler: @offre?.Titre</h1>
+    <a href="/Etudiant/Offres" class="btn btn-secondary">Retour</a>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="card">
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="offreId" value="@offre?.Id" />
+
+        <div class="form-group">
+            <label>CV (PDF, obligatoire, max 5 Mo)</label>
+            <input type="file" name="cv" class="form-control" accept=".pdf" required />
+        </div>
+
+        <div class="form-group">
+            <label>Lettre de motivation (PDF, optionnel)</label>
+            <input type="file" name="lm" class="form-control" accept=".pdf" />
+        </div>
+
+        <div class="form-group">
+            <label>Lettre de recommandation (PDF, optionnel)</label>
+            <input type="file" name="lr" class="form-control" accept=".pdf" />
+        </div>
+
+        <div class="form-group">
+            <label>Releves de notes (PDF, optionnel)</label>
+            <input type="file" name="releves" class="form-control" accept=".pdf" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Soumettre la candidature</button>
+    </form>
+</div>
