@@ -20,6 +20,9 @@ namespace SIGSTO.Services
             var smtpPass = _config["Smtp:Password"];
             var fromEmail = _config["Smtp:From"];
 
+            if (string.IsNullOrEmpty(smtpPass))
+                throw new Exception("Le mot de passe SMTP n'est pas configure. Verifiez appsettings.Development.json");
+
             var message = new MailMessage();
             message.From = new MailAddress(fromEmail!, "SIGSTO - ONEE");
             message.To.Add(destinataire);
@@ -42,6 +45,8 @@ namespace SIGSTO.Services
             using var client = new SmtpClient(smtpHost, smtpPort);
             client.Credentials = new NetworkCredential(smtpUser, smtpPass);
             client.EnableSsl = true;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.Timeout = 15000;
             client.Send(message);
         }
     }

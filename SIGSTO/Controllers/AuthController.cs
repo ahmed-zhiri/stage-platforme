@@ -43,6 +43,12 @@ namespace SIGSTO.Controllers
                 return View();
             }
 
+            if (string.IsNullOrEmpty(user.Password))
+            {
+                ViewBag.Error = "Vous n'avez pas encore defini de mot de passe.";
+                return View();
+            }
+
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Role", user.Role.ToString());
             HttpContext.Session.SetString("UserName", user.Prenom + " " + user.Nom);
@@ -56,14 +62,8 @@ namespace SIGSTO.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(string nom, string prenom, string email, string password, string confirmPassword)
+        public IActionResult Register(string nom, string prenom, string email)
         {
-            if (password != confirmPassword)
-            {
-                ViewBag.Error = "Les mots de passe ne correspondent pas.";
-                return View();
-            }
-
             if (!Regex.IsMatch(email, @"^[a-zA-Z0-9._%+-]+@etu\.uae\.ac\.ma$"))
             {
                 ViewBag.Error = "Veuillez utiliser votre email institutionnel (@etu.uae.ac.ma).";
@@ -81,7 +81,7 @@ namespace SIGSTO.Controllers
                 Nom = nom,
                 Prenom = prenom,
                 Email = email,
-                Password = HashPassword(password),
+                Password = "",
                 Role = RoleUtilisateur.Etudiant,
                 EmailVerifie = false
             };
@@ -150,8 +150,9 @@ namespace SIGSTO.Controllers
             }
             _db.SaveChanges();
 
-            TempData["Success"] = "Email verifie avec succes. Vous pouvez maintenant vous connecter.";
-            return RedirectToAction("Login");
+            TempData["Success"] = "Email verifie avec succes. Veuillez creer votre mot de passe.";
+            TempData["UserId"] = userId;
+            return RedirectToAction("SetPassword");
         }
 
         [HttpPost]
@@ -184,6 +185,42 @@ namespace SIGSTO.Controllers
 
             TempData["UserId"] = etudiant.Id;
             return RedirectToAction("VerifyOTP");
+        }
+
+        public IActionResult SetPassword()
+        {
+            ViewBag.UserId = TempData["UserId"];
+            if (ViewBag.UserId == null)
+                return RedirectToAction("Login");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetPassword(int userId, string password, string confirmPassword)
+        {
+            if (string.IsNullOrEmpty(password) || password.Length < 6)
+            {
+                ViewBag.Error = "Le mot de passe doit contenir au moins 6 caracteres.";
+                ViewBag.UserId = userId;
+                return View();
+            }
+
+            if (password != confirmPassword)
+            {
+                ViewBag.Error = "Les mots de passe ne correspondent pas.";
+                ViewBag.UserId = userId;
+                return View();
+            }
+
+            var etudiant = _db.Etudiants.Find(userId);
+            if (etudiant == null)
+                return RedirectToAction("Login");
+
+            etudiant.Password = HashPassword(password);
+            _db.SaveChanges();
+
+            TempData["Success"] = "Mot de passe cree avec succes. Vous pouvez maintenant vous connecter.";
+            return RedirectToAction("Login");
         }
 
         public IActionResult Logout()
